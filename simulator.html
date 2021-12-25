@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>BrainNode</title>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+        <script src="js/uuidv4.min.js"></script>
+        <script src="js/babylon.js"></script>
+        <script src="js/babylonjs.loaders.min.js"></script>
+        <script src="js/pep.js"></script>
+        <script src="js/babylon.dynamicterrain.min.js"></script>
+        <script src="js/babylonjs.materials.min.js"></script>
+        <script src="js/ammo.js"></script>
+        <script src="js/cannon.min.js"></script>
+        <script src="js/simplepeer.min.js"></script>
+        <script src="js/myutils.js"></script>
+
+    </head>
+
+   <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas> 
+   </body>
+   <script src="brain/signaling.js"></script>
+   <script src="brain/brain.js"></script>
+   <script src="brain/simulator.js"></script>
+   <script>
+     const queryString = window.location.search;
+     const urlParams = new URLSearchParams(queryString);
+     const worldName = urlParams.get('worldname')
+     const signalingServer = urlParams.get('signalserver')
+     const worldURI = urlParams.get('worlduri')
+     if (!worldName || !worldName  || !worldURI ){
+      console.error("please supply a simulator,worldkey,signalserver URI using an uri parameters ?simulator=*"+
+                    "&signalserver=*")
+     }
+     else
+     {
+       window.CurrentSimulator = new Simulator("http://127.0.0.1:8181",worldName,worldURI,"")
+       window.IncludePath = worldURI+'/';
+     }
+   </script>
+
+</html>
