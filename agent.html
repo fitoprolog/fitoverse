@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>BrainNode</title>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+        <script src="js/uuidv4.min.js"></script>
+        <script src="js/babylon.js"></script>
+        <script src="js/babylonjs.loaders.min.js"></script>
+        <script src="js/pep.js"></script>
+        <script src="js/babylon.dynamicterrain.min.js"></script>
+        <script src="js/babylonjs.materials.min.js"></script>
+        <script src="js/ammo.js"></script>
+        <script src="js/cannon.min.js"></script>
+        <script src="js/simplepeer.min.js"></script>
+        <script src="js/myutils.js"></script>
+
+    </head>
+
+   <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas> 
+   </body>
+   <script src="agent/agentui.js"></script> 
+   <script src="agent/agent.js"></script>
+   <script>
+     const queryString = window.location.search;
+     const urlParams = new URLSearchParams(queryString);
+     const signalingServer = urlParams.get('signalserver')
+     const worldName = urlParams.get('worldname')
+     const userName  = urlParams.get('username')
+     if ( !worldName || !signalingServer  || !userName){
+       console.error("please supply a worldname, signalgserver and username")
+     }
+     else
+     {
+       console.log(signalingServer)
+       window.CurrentAgent= new Agent(worldName,signalingServer,userName)
+       CurrentAgent.startTheMagic() 
+     }
+   </script>
+
+</html>
