@@ -9,40 +9,11 @@ class SignalingBrain {
 
   addPeer(uuid)
   {
-    this.allPeers[uuid]=new SimplePeer({
-      initiator: true,
-      trickle:false,
-    });
-    let p = this.allPeers[uuid];
-    p.name = uuid; 
-    p.on('error', err => {
-      console.log('SOMETHING WENT WRONG  WITH PEER', err)
-    })
-    p.on('close', data=>{
-      console.log(`BYE BYE ${p.name}`);
-      delete this.allPeers[p.name];
-    });
-    p.on('signal', data => {
-      let sdata = {
-        command : "signal",
-        type    : "webrtc",
-        payload : data,
-        uid     : uuid,
-        world   : worldName,
-      };
-      this.signalSocket.send(JSON.stringify(sdata));
-    });
-    p.on('connect', (conn) => {
-      this.onAgentJoin(uuid,p)
-      p.isReady = true;
-    });
-    p.on('data', (data)=>{
-      this.onAgentCommand(uuid,data,p)
-    });
+    new Peer(uuid,worldName,this);
   }
   
   startHandshake(){
-    console.log(this.signalingServerURI)
+
     this.signalSocket = new WebSocket(this.signalingServerURI);
     let signalSocket = this.signalSocket
     signalSocket.onerror = console.log;
@@ -86,7 +57,7 @@ class SignalingBrain {
         if (pdata.payload == "join")
         {
           this.addPeer(pdata.uid);  
-          console.log("adding" + pdata.uid)
+          console.log("adding " + pdata.uid)
         }
         else 
         {
@@ -146,34 +117,14 @@ class SignalingBrain {
   warn(msg)
   {
   }
-
-  addNodeToClients(){
-  }
-  removeNodeFromClients(nodeName){
-  }
-  updateNodeFromClients(nodeName,incremental){
-  }
-
-  sendSceneToClient(uuid){
-    let data = BABYLON.SceneSerializer.Serialize(scene)
-    var strScene = JSON.stringify(data);
-    data = {
-      command : "signal",
-      type    : "load-scene",
-      uid     : uuid,
-      payload : strScene,
-      world   : worldName,
-    }
-    this.signalSocket.send(JSON.stringify(data))
-  }
-
-  /*Overridable "User" layer functions*/
-  onAgentJoin(uuid,peer){
+  
+  //overridable
+  onAgentJoin(peer){
   }
 
   onAgentLeave(){
   }
 
-  onAgentCommand(uuid,data,peer){
+  onAgentData(data,peer){
   }
 }

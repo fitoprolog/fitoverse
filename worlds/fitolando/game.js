@@ -60,5 +60,5 @@ build_game=function(onready){
   });
   ground.position.y = 0;
   ground.material = terrainMaterial;
-  create_particles();
+  //create_particles();
 }

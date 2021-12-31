@@ -91,7 +91,7 @@ var preload_ui_elements=function(){
       window.fullwebxr = w;
       window.webXR = w.baseExperience;
       window.camera = webXR.camera;
-      //w.input.onControllerAddedObservable.add(controller_handler);
+      w.input.onControllerAddedObservable.add(controller_handler);
       VRMode=true;
     });
 }

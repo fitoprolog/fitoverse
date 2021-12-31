@@ -4,9 +4,10 @@ main()
   include('game.js',()=>{
     build_game(()=>{
       CurrentSimulator.sceneIsReady()
-      CurrentSimulator.onAgentJoin=(uuid,peer)=>{
-        console.log("All the boilerplaye seems to be ready :D "+ uuid+ ' Entered the room') 
-        CurrentSimulator.sendSceneToClient(uuid)
+      CurrentSimulator.onAgentJoin=(peer)=>{
+        console.log(peer)
+        console.log("All the boilerplaye seems to be ready :D "+ peer.uuid+ ' Entered the room') 
+        CurrentSimulator.sendSceneToClient(peer.uuid)
       }
     })
   })
